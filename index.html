@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080f17">
+<title>Host PSM • ESP32-S2</title>
+<script type="module" src="hostpsm-web-installer.js?v=20260912-visual7"></script>
+<style>
+:root{color-scheme:dark;--ink:#f5f8fb;--muted:#aab6c1;--blue:#49b8ff;--line:#28536f;--surface:#06101c;--psm-card-border:rgba(80,145,193,.52);--psm-card-bg:linear-gradient(to bottom,#0b1d31 0%,#071522 48%,#030a12 100%);--psm-card-shadow:0 12px 26px rgba(0,0,0,.32),0 0 0 1px rgba(151,213,249,.035),inset 0 1px 0 rgba(218,243,255,.10),inset 0 -1px 0 rgba(27,91,142,.18),inset 0 0 30px rgba(18,75,128,.10)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{width:100%;min-height:100%;margin:0}
+body{background:#030912;background-image:radial-gradient(ellipse at 50% 42%,#0d2238 0%,#07131f 44%,#030912 82%,#01040a 100%);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.46}
+button,summary{-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:1px solid rgba(128,203,255,.62);outline-offset:0}
+summary:focus-visible{outline:1px solid rgba(128,203,255,.60);outline-offset:3px}
+.iconDefs{position:absolute;width:0;height:0;overflow:hidden}
+.uiIcon{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#root{min-height:100svh;display:grid;place-items:center;padding:32px 20px}
+#panel{position:relative;width:min(736px,calc(100vw - 48px));height:min(420px,calc(100svh - 48px));border:1px solid var(--psm-card-border);border-radius:24px;background:var(--psm-card-bg);box-shadow:0 22px 70px rgba(0,0,0,.52),var(--psm-card-shadow);overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr)}
+.brandRow{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:25px 32px;border-bottom:1px solid rgba(55,112,151,.46);background:linear-gradient(to bottom,rgba(16,44,72,.20),rgba(2,10,18,0))}
+.brand{display:flex;align-items:center;gap:11px;font-size:17px;letter-spacing:.6px;font-weight:700}
+.version{font-size:11px;font-weight:650;letter-spacing:.3px;color:#9fcdf0;padding:4px 8px;border:1px solid rgba(73,184,255,.32);border-radius:8px;background:rgba(9,31,52,.48);box-shadow:inset 0 1px 0 rgba(218,243,255,.05)}
+.compatibility{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:650;color:#c7dff3;letter-spacing:.18px;white-space:nowrap;text-shadow:0 0 8px rgba(73,184,255,.12)}
+.homeContent{min-height:0;padding:34px 32px 38px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.iconTile{display:grid;place-items:center;width:66px;height:66px;border-radius:19px;border:1px solid rgba(80,145,193,.56);background:linear-gradient(to bottom,#0d2944 0%,#091b2f 45%,#04101d 100%);color:var(--blue);box-shadow:0 8px 18px rgba(0,0,0,.28),0 0 12px rgba(40,141,220,.14),inset 0 1px 0 rgba(218,245,255,.13),inset 0 0 20px rgba(21,89,155,.10)}
+.iconTile .uiIcon{width:38px;height:38px;stroke-width:1.45}
+.homeContent .iconTile{width:78px;height:78px;margin:0 auto 25px;border-radius:21px}
+.homeContent .iconTile .uiIcon{width:44px;height:44px}
+#stageTitle{margin:0;font-size:clamp(25px,3.5vw,34px);font-weight:650;letter-spacing:-.7px;line-height:1.25}
+#stageText{font-size:15px;color:var(--muted);line-height:1.55;margin:15px auto 29px;max-width:440px}
+.installBtn,.modalBtn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(59,133,189,.84);border-radius:11px;background:linear-gradient(to bottom,#123457 0%,#0b2742 46%,#061625 100%);color:#f7fbff;font-size:15px;font-weight:650;line-height:1.2;box-shadow:0 6px 15px rgba(0,0,0,.28),0 0 10px rgba(40,141,220,.12),inset 0 1px 0 rgba(218,245,255,.14),inset 0 -1px 0 rgba(16,63,103,.34);transition:filter .15s,border-color .15s,box-shadow .15s}
+.installBtn:hover:not(:disabled),.modalBtn:hover:not(:disabled){filter:brightness(1.07);border-color:#58a9e3;box-shadow:0 7px 17px rgba(0,0,0,.30),0 0 12px rgba(40,141,220,.16),inset 0 1px 0 rgba(218,245,255,.16)}
+.installBtn:active:not(:disabled),.modalBtn:active:not(:disabled){filter:brightness(.94);transform:translateY(1px)}
+.installBtn{min-width:224px;min-height:52px;padding:15px 28px}
+.unsupported{max-width:320px;margin:18px auto 0;font-size:13px;color:#dfc297;line-height:1.5}
+#hostpsmModal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:24px;background:#030910bc;backdrop-filter:blur(12px)}
+#hostpsmModal.open{display:flex}
+.modalCard{position:relative;width:min(736px,calc(100vw - 48px));height:min(420px,calc(100svh - 48px));max-height:none;overflow:hidden;border:1px solid var(--psm-card-border);border-radius:24px;background:var(--psm-card-bg);box-shadow:0 26px 100px rgba(0,0,0,.62),var(--psm-card-shadow);display:grid;grid-template-rows:118px minmax(0,1fr) 96px;scrollbar-color:#2b506b transparent;scrollbar-width:thin}
+.modalHead{position:relative;height:100%;display:flex;align-items:center;gap:23px;padding:26px 38px}
+#modalTitle{margin:0;padding-right:30px;font-size:clamp(25px,3vw,31px);font-weight:650;letter-spacing:-.6px;line-height:1.2;overflow-wrap:anywhere}
+#modalClose{position:absolute;right:23px;top:20px;width:34px;height:34px;padding:6px;display:grid;place-items:center;border:0;background:transparent;border-radius:8px;color:#a7b6cf}
+#modalClose .uiIcon{width:22px;height:22px}
+#modalClose:hover{background:#9bbde00d;color:#fff}
+#modalBody{height:100%;min-height:0;padding:18px 38px 20px;font-size:17px;color:#c6d1e4;line-height:1.6;overflow:auto;overflow-wrap:anywhere;scrollbar-color:#2b506b transparent;scrollbar-width:thin}
+#modalBody p{margin:0}
+#modalBody strong{color:#f0f4fc;font-weight:650}
+.connectInstruction{position:relative;width:100%;height:122px;min-height:122px;display:flex;align-items:center;gap:24px;padding:24px 26px;border:1px solid var(--psm-card-border);border-radius:23px;background:var(--psm-card-bg);box-shadow:var(--psm-card-shadow);overflow:hidden}
+.connectInstruction>.uiIcon{width:36px;height:42px;color:#bdcbe5;stroke-width:1.6}
+.instructionText{padding-left:24px;border-left:1px solid #345578;font-size:18px;line-height:1.6;color:#ecf2fc}
+.instructionText span{display:block;color:var(--muted);font-size:16px;margin-top:7px}
+kbd{display:inline-block;vertical-align:baseline;font:inherit;font-weight:700;letter-spacing:.25px;line-height:1.3;color:#59bfff;background:#10284180;border:1px solid #2c527b;border-radius:7px;padding:3px 7px;white-space:nowrap}
+.modalActions{height:96px;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:24px 38px;border-top:1px solid rgba(55,112,151,.42);background:linear-gradient(to bottom,rgba(2,9,16,.08),rgba(1,6,11,.42));overflow:visible}
+.modalBtn{min-height:48px;min-width:123px;padding:13px 23px;white-space:nowrap}
+#modalPrimary{min-width:191px;color:#f7fbff}
+.modalBtn.secondary{border-color:rgba(80,145,193,.44);background:linear-gradient(to bottom,#0b1d31,#06111e);color:#e6edf5;box-shadow:0 5px 14px rgba(0,0,0,.22),inset 0 1px 0 rgba(218,243,255,.07)}
+.supportMenu{position:relative;margin-right:auto;color:#a3b5ca;font-size:16px;font-weight:600;line-height:1.4;flex-shrink:0}
+.supportMenu>summary{height:48px;display:flex;align-items:center;gap:9px;list-style:none;cursor:pointer;padding:0 2px;white-space:nowrap}
+.supportMenu>summary::-webkit-details-marker{display:none}
+.supportMenu>summary::after{content:"";width:5px;height:5px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:2px}
+.supportMenu[open]>summary::after{transform:rotate(225deg) translate(-1px,-1px)}
+.supportMenu>summary:hover{color:#c9dcf1}
+.supportPopover{position:absolute;bottom:calc(100% + 12px);left:0;z-index:5;width:min(420px,calc(100vw - 110px));max-height:min(370px,55svh);overflow:auto;border:1px solid var(--psm-card-border);border-radius:16px;padding:12px;background:var(--psm-card-bg);box-shadow:0 16px 50px #000b,var(--psm-card-shadow);scrollbar-width:thin}
+.supportAction{display:block;width:100%;padding:11px 12px;text-align:left;font-size:13px;line-height:1.4;color:#bfdafa;border:0;border-radius:7px;background:transparent}
+.supportAction:hover:not(:disabled){background:#2b436055}
+#modalDetails:empty{display:none}
+#modalDetails{padding:9px 12px 4px;border-top:1px solid #293e54;margin-top:6px}
+#modalDetails p{font-size:12px;line-height:1.5;color:#aabdd4;margin:0 0 8px;overflow-wrap:anywhere}
+#modalLog{display:none;margin:0;max-height:215px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-family:Consolas,monospace;font-size:11px;line-height:1.55;color:#99afc8;scrollbar-width:thin}
+#modalLog.visible{display:block}
+.progressPanel{position:relative;width:100%;height:122px;min-height:122px;padding:24px 26px;border:1px solid var(--psm-card-border);border-radius:23px;background:var(--psm-card-bg);box-shadow:var(--psm-card-shadow);overflow:hidden;display:grid;grid-template-rows:32px 7px;align-content:center;row-gap:18px}
+.progressTop{height:32px;min-height:32px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+#modalMessage{min-width:0;font-size:20px;line-height:1.35;color:#edf3fc;font-weight:550;letter-spacing:-.25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#modalPercent{min-width:56px;text-align:right;font-size:24px;font-weight:600;letter-spacing:-.5px;color:#5fc3ff;white-space:nowrap;font-variant-numeric:tabular-nums}
+.progressShell{height:7px;background:#080f19;border-radius:8px;margin-top:0;overflow:hidden;box-shadow:inset 0 0 0 1px #293e5488}
+#progressShell[hidden]{display:block!important;visibility:hidden}
+#modalPercent[hidden]{display:block!important;visibility:hidden}
+#modalProgress{height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,#167dff,#51bdff);transition:width .16s ease}
+#modalBody .progressNote{height:24px;font-size:17px;font-weight:500;line-height:24px;color:var(--muted);margin:14px 0 0;text-align:center;white-space:nowrap}
+#hostpsmModal[data-view="progress"] .iconTile{position:relative}
+#hostpsmModal[data-view="progress"] .iconTile::after{content:"";position:absolute;inset:-4px;border:1px solid #51b8ff17;border-top-color:#51b8ffb0;border-radius:22px;animation:activeGlow 1.8s ease-in-out infinite}
+@keyframes activeGlow{50%{border-top-color:#51b8ff35;border-right-color:#51b8ffb0}}
+#hostpsmModal[data-view="success"] .iconTile{color:#8cdbb7;background:#162e2c80;border-color:#35534e}
+.resultLead{font-size:17px;color:#bfcde0;line-height:1.5}
+.ps5Label{margin:8px 0 6px!important;color:#65bdF5;font-size:11px;font-weight:700;line-height:1.35;letter-spacing:.9px}
+.networkDetails{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 12px;border:0;border-radius:0;background:transparent;overflow:visible}
+.networkItem{position:relative;height:62px;min-height:62px;padding:10px 16px 10px 52px;border:1px solid var(--psm-card-border);border-radius:18px;background:var(--psm-card-bg);box-shadow:var(--psm-card-shadow);overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.networkItem span{display:block;color:#8fa5bf;font-size:12px;line-height:1.3;margin-bottom:2px}
+.networkItem strong{display:block;font-size:16px;line-height:1.3;letter-spacing:.05px;white-space:nowrap}
+.nextStep{font-size:14px;color:var(--muted)}
+.resultNote{position:relative;padding:14px 18px 14px 48px;border:1px solid rgba(205,153,79,.46);border-radius:18px;background:linear-gradient(to bottom,rgba(61,42,20,.40),rgba(28,19,10,.42));color:#dec7a5;font-size:14px;margin-top:14px!important;box-shadow:inset 0 1px 0 rgba(255,235,199,.05)}
+#hostpsmModal[data-view="error"] .iconTile{color:#e0bc91;background:#32282055;border-color:#5c4937}
+#hostpsmModal[data-view="cancelled"] .iconTile{color:#b2c0d4}
+
+/* Visual Host PSM: cards e iconografia. Somente apresentação. */
+#panel::before,.modalCard::before,.connectInstruction::before,.progressPanel::before,.networkItem::before{content:"";position:absolute;left:18px;right:18px;top:0;height:39px;border-radius:22px 22px 50% 50%;background:linear-gradient(to bottom,rgba(167,221,251,.08),rgba(62,139,191,.015),rgba(0,0,0,0));pointer-events:none}
+#panel>*{position:relative;z-index:1}.modalCard>*{position:relative;z-index:1}.connectInstruction>*{position:relative;z-index:1}.progressPanel>*{position:relative;z-index:1}.networkItem>*{position:relative;z-index:1}
+.compatibility::before,.installBtn::before,.modalBtn::before,.networkItem::after,.nextStep::before,.resultNote::before{content:"";display:inline-block;width:18px;height:18px;flex:none;background:currentColor;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:contain;mask-repeat:no-repeat;mask-position:center;mask-size:contain}
+.compatibility::before{width:16px;height:16px;color:#49b8ff;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHBhdGggZD0nTTcgOWgxMGE0IDQgMCAwIDEgMy44IDUuMmwtMSAzLjFhMiAyIDAgMCAxLTMuMiAxbC0yLjEtMS43aC01bC0yLjEgMS43YTIgMiAwIDAgMS0zLjItMWwtMS0zLjFBNCA0IDAgMCAxIDcgOVonLz48cGF0aCBkPSdNOCAxMnYzbS0xLjUtMS41aDNNMTYgMTNoLjAxTTE4IDE1aC4wMScvPjwvc3ZnPg==");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHBhdGggZD0nTTcgOWgxMGE0IDQgMCAwIDEgMy44IDUuMmwtMSAzLjFhMiAyIDAgMCAxLTMuMiAxbC0yLjEtMS43aC01bC0yLjEgMS43YTIgMiAwIDAgMS0zLjItMWwtMS0zLjFBNCA0IDAgMCAxIDcgOVonLz48cGF0aCBkPSdNOCAxMnYzbS0xLjUtMS41aDNNMTYgMTNoLjAxTTE4IDE1aC4wMScvPjwvc3ZnPg==")}
+.installBtn::before{width:20px;height:20px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHJlY3QgeD0nNScgeT0nNScgd2lkdGg9JzE0JyBoZWlnaHQ9JzE0JyByeD0nMycvPjxwYXRoIGQ9J005IDJ2M202LTN2M005IDE5djNtNi0zdjNNMiA5aDNtLTMgNmgzbTE0LTZoM20tMyA2aDNNMTIgOHY3bS0zLTMgMyAzIDMtMycvPjwvc3ZnPg==");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHJlY3QgeD0nNScgeT0nNScgd2lkdGg9JzE0JyBoZWlnaHQ9JzE0JyByeD0nMycvPjxwYXRoIGQ9J005IDJ2M202LTN2M005IDE5djNtNi0zdjNNMiA5aDNtLTMgNmgzbTE0LTZoM20tMyA2aDNNMTIgOHY3bS0zLTMgMyAzIDMtMycvPjwvc3ZnPg==")}
+#hostpsmModal[data-view="connect"] #modalPrimary::before{width:18px;height:18px;color:#8ed3ff;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHBhdGggZD0nTTggOFYzaDh2NU03IDhoMTB2N2E1IDUgMCAwIDEtMTAgMFY4Wm01IDEydjNtLTItMTh2LjVtNC0uNXYuNScvPjwvc3ZnPg==");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHBhdGggZD0nTTggOFYzaDh2NU03IDhoMTB2N2E1IDUgMCAwIDEtMTAgMFY4Wm01IDEydjNtLTItMTh2LjVtNC0uNXYuNScvPjwvc3ZnPg==")}
+#hostpsmModal[data-view="success"] #modalPrimary::before,#hostpsmModal[data-view="error"] #modalPrimary::before,#hostpsmModal[data-view="cancelled"] #modalPrimary::before{width:18px;height:18px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScyJyBzdHJva2UtbGluZWNhcD0ncm91bmQnPjxwYXRoIGQ9J002IDZsMTIgMTJNMTggNiA2IDE4Jy8+PC9zdmc+");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScyJyBzdHJva2UtbGluZWNhcD0ncm91bmQnPjxwYXRoIGQ9J002IDZsMTIgMTJNMTggNiA2IDE4Jy8+PC9zdmc+")}
+#modalSecondary::before{width:17px;height:17px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScyJyBzdHJva2UtbGluZWNhcD0ncm91bmQnPjxwYXRoIGQ9J002IDZsMTIgMTJNMTggNiA2IDE4Jy8+PC9zdmc+");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScyJyBzdHJva2UtbGluZWNhcD0ncm91bmQnPjxwYXRoIGQ9J002IDZsMTIgMTJNMTggNiA2IDE4Jy8+PC9zdmc+")}
+#hostpsmModal[data-view="progress"] #modalSecondary::before{border-radius:3px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCc+PHJlY3QgeD0nNicgeT0nNicgd2lkdGg9JzEyJyBoZWlnaHQ9JzEyJyByeD0nMicgZmlsbD0nYmxhY2snLz48L3N2Zz4=");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCc+PHJlY3QgeD0nNicgeT0nNicgd2lkdGg9JzEyJyBoZWlnaHQ9JzEyJyByeD0nMicgZmlsbD0nYmxhY2snLz48L3N2Zz4=")}
+.networkItem::after{position:absolute;left:20px;top:50%;width:24px;height:24px;transform:translateY(-50%);color:#49b8ff}
+.networkItem:nth-child(1)::after{-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCc+PHBhdGggZD0nTTQgOWExMiAxMiAwIDAgMSAxNiAwTTcgMTJhOCA4IDAgMCAxIDEwIDBNMTAgMTVhNCA0IDAgMCAxIDQgME0xMiAxOWguMDEnLz48L3N2Zz4=");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCc+PHBhdGggZD0nTTQgOWExMiAxMiAwIDAgMSAxNiAwTTcgMTJhOCA4IDAgMCAxIDEwIDBNMTAgMTVhNCA0IDAgMCAxIDQgME0xMiAxOWguMDEnLz48L3N2Zz4=")}
+.networkItem:nth-child(2)::after{-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHJlY3QgeD0nNCcgeT0nNCcgd2lkdGg9JzE2JyBoZWlnaHQ9JzYnIHJ4PScyJy8+PHJlY3QgeD0nNCcgeT0nMTQnIHdpZHRoPScxNicgaGVpZ2h0PSc2JyByeD0nMicvPjxwYXRoIGQ9J004IDdoLjAxTTggMTdoLjAxTTEyIDdoNU0xMiAxN2g1Jy8+PC9zdmc+");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCc+PHJlY3QgeD0nNCcgeT0nNCcgd2lkdGg9JzE2JyBoZWlnaHQ9JzYnIHJ4PScyJy8+PHJlY3QgeD0nNCcgeT0nMTQnIHdpZHRoPScxNicgaGVpZ2h0PSc2JyByeD0nMicvPjxwYXRoIGQ9J004IDdoLjAxTTggMTdoLjAxTTEyIDdoNU0xMiAxN2g1Jy8+PC9zdmc+")}
+.nextStep{position:relative;display:block;padding-left:32px;line-height:1.5}.nextStep::before{position:absolute;left:0;top:50%;width:22px;height:22px;transform:translateY(-50%);color:#49b8ff;filter:drop-shadow(0 0 5px rgba(73,184,255,.16));-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjY1JyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnPjxwYXRoIGQ9J000IDUuNUExLjUgMS41IDAgMCAxIDUuNSA0SDlhMyAzIDAgMCAxIDMgM3YxM2EzIDMgMCAwIDAtMy0zSDUuNUExLjUgMS41IDAgMCAwIDQgMTguNXYtMTNaJy8+PHBhdGggZD0nTTIwIDUuNUExLjUgMS41IDAgMCAwIDE4LjUgNEgxNWEzIDMgMCAwIDAtMyAzdjEzYTMgMyAwIDAgMSAzLTNoMy41YTEuNSAxLjUgMCAwIDEgMS41IDEuNXYtMTNaJy8+PHBhdGggZD0nTTcgOGgyTTE1IDhoMicvPjwvc3ZnPg==");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjY1JyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnPjxwYXRoIGQ9J000IDUuNUExLjUgMS41IDAgMCAxIDUuNSA0SDlhMyAzIDAgMCAxIDMgM3YxM2EzIDMgMCAwIDAtMy0zSDUuNUExLjUgMS41IDAgMCAwIDQgMTguNXYtMTNaJy8+PHBhdGggZD0nTTIwIDUuNUExLjUgMS41IDAgMCAwIDE4LjUgNEgxNWEzIDMgMCAwIDAtMyAzdjEzYTMgMyAwIDAgMSAzLTNoMy41YTEuNSAxLjUgMCAwIDEgMS41IDEuNXYtMTNaJy8+PHBhdGggZD0nTTcgOGgyTTE1IDhoMicvPjwvc3ZnPg==")}
+.progressNote{display:block}.progressNote strong{color:#eaf5ff;font-weight:700}
+.resultNote::before{position:absolute;left:17px;top:15px;width:20px;height:20px;color:#e0b36f;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCc+PGNpcmNsZSBjeD0nMTInIGN5PScxMicgcj0nOScvPjxwYXRoIGQ9J00xMiA3djZNMTIgMTdoLjAxJy8+PC9zdmc+");mask-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyNCAyNCcgZmlsbD0nbm9uZScgc3Ryb2tlPSdibGFjaycgc3Ryb2tlLXdpZHRoPScxLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCc+PGNpcmNsZSBjeD0nMTInIGN5PScxMicgcj0nOScvPjxwYXRoIGQ9J00xMiA3djZNMTIgMTdoLjAxJy8+PC9zdmc+")}
+
+@media(max-width:620px){
+ #root{padding:16px}#panel{width:calc(100vw - 32px);height:min(420px,calc(100svh - 32px));border-radius:20px}
+ .brandRow{padding:20px;gap:14px;flex-wrap:wrap}.brand{font-size:15px}.compatibility{font-size:12.5px}
+ .homeContent{padding:28px 22px 32px}#stageText{font-size:14px}
+ #hostpsmModal{padding:16px}.modalCard{width:calc(100vw - 32px);height:min(420px,calc(100svh - 32px));border-radius:19px;grid-template-rows:106px minmax(0,1fr) 84px}
+ .modalHead{height:100%;padding:24px 23px;gap:17px}.iconTile{width:53px;height:53px;border-radius:15px}
+ .iconTile .uiIcon{width:30px;height:30px}#modalTitle{font-size:25px;padding-right:13px;letter-spacing:-.4px}
+ #modalClose{right:12px;top:12px;width:28px;height:28px}#modalBody{padding:16px 23px 18px;font-size:15px}
+ .connectInstruction,.progressPanel{height:122px;min-height:122px}.connectInstruction{padding:20px 18px;gap:16px}.connectInstruction>.uiIcon{width:27px;height:35px}
+ .instructionText{font-size:16px;padding-left:17px}.instructionText span{font-size:14px;margin-top:7px}
+ .modalActions{height:84px;padding:19px 23px;gap:10px;flex-wrap:nowrap}
+ .modalBtn{font-size:14px;min-width:96px;padding:12px 18px;min-height:46px}#modalPrimary{min-width:155px}
+ .supportMenu{font-size:15px}.supportMenu>summary{height:46px}.supportPopover{width:min(380px,calc(100vw - 80px))}
+ .progressPanel{padding:22px 20px}#modalMessage{font-size:18px}#modalPercent{font-size:22px}
+ #modalBody .progressNote{font-size:15px;line-height:24px;margin-top:12px}.resultLead{font-size:16px}.networkItem{height:62px;min-height:62px;padding:10px 12px 10px 48px}.networkItem strong{font-size:14px}.ps5Label{font-size:10px}
+}
+@media(max-width:420px){
+ .brandRow{display:block}.compatibility{display:block;margin-top:10px}
+ .modalHead{gap:14px;padding-right:25px}#modalTitle{font-size:22px}
+ .connectInstruction>.uiIcon{display:none}.instructionText{border:0;padding:0}
+ .modalActions{gap:8px}.modalActions .modalBtn{min-width:0;flex:1 1 0;padding:10px 12px}#modalPrimary{min-width:0}
+ .supportMenu{font-size:15px;flex:0 0 auto}.supportMenu>summary{padding:0 1px}.resultLead{font-size:15px}.networkItem{padding-left:42px;padding-right:8px}.networkItem::after{left:15px!important;width:21px!important;height:21px!important}.networkItem strong{font-size:12.5px}.networkItem span{font-size:10.5px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg class="iconDefs" aria-hidden="true"><defs>
+<symbol id="chipIcon" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M8 2v3m4-3v3m4-3v3M8 19v3m4-3v3m4-3v3M2 8h3m-3 4h3m-3 4h3m14-8h3m-3 4h3m-3 4h3"/></symbol>
+<symbol id="usbIcon" viewBox="0 0 24 24"><path d="M8 8V3h8v5M7 8h10v7a5 5 0 0 1-10 0V8Zm5 12v3m-2-18v.5m4-.5v.5"/></symbol>
+<symbol id="closeIcon" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="checkIcon" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+<symbol id="alertIcon" viewBox="0 0 24 24"><path d="M12 8v5m0 4h.01"/><circle cx="12" cy="12" r="9"/></symbol>
+</defs></svg>
+<main id="root">
+ <section id="panel" aria-labelledby="stageTitle">
+  <header class="brandRow"><div class="brand">HOST PSM <span class="version">v1.1.0</span></div><span class="compatibility">ReLapse 7.00–13.60</span></header>
+  <div class="homeContent">
+   <div class="iconTile" aria-hidden="true"><svg class="uiIcon"><use href="#chipIcon"/></svg></div>
+   <h1 id="stageTitle">Instalar na ESP32-S2</h1>
+   <p id="stageText">Conecte a placa ao computador para começar.</p>
+   <button id="installButton" class="installBtn" type="button">Instalar</button>
+   <p id="unsupportedText" class="unsupported" hidden>Abra esta página no Chrome ou Edge.</p>
+  </div>
+ </section>
+</main>
+<div id="hostpsmModal" aria-hidden="true">
+ <section class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modalHead">
+   <div class="iconTile" aria-hidden="true"><svg class="uiIcon"><use id="modalStateIcon" href="#chipIcon"/></svg></div>
+   <h2 id="modalTitle">Conectar ESP32-S2</h2>
+   <button id="modalClose" type="button" aria-label="Fechar"><svg class="uiIcon" aria-hidden="true"><use href="#closeIcon"/></svg></button>
+  </div>
+  <div id="modalBody"></div>
+  <div class="modalActions">
+   <details id="modalSupport" class="supportMenu">
+    <summary id="modalSupportLabel">Ajuda</summary>
+    <div class="supportPopover">
+     <button id="modalDiagnostic" class="supportAction" type="button" hidden>Testar conexão</button>
+     <button id="previousLog" class="supportAction" type="button" hidden>Registro anterior</button>
+     <div id="modalDetails"></div>
+    </div>
+   </details>
+   <button id="modalSecondary" class="modalBtn secondary" type="button">Cancelar</button>
+   <button id="modalPrimary" class="modalBtn" type="button">Selecionar porta</button>
+  </div>
+ </section>
+</div>
+</body>
+</html>

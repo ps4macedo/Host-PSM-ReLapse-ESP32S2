@@ -1,0 +1,43 @@
+{
+  "name": "Host PSM ESP32-S2",
+  "version": "1.1.0",
+  "schema_version": 2,
+  "flash_size": 4194304,
+  "build_id": "25857447c16b615c96f1217c4841bd111227d4f0b21c48590a07d51f9c7a33de",
+  "new_install_prompt_erase": false,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S2",
+      "parts": [
+        {
+          "path": "firmware/bootloader.bin",
+          "offset": 4096,
+          "size": 14720,
+          "sha256": "0b49d993df8be7cda46aba5f084ae0f0b3e8996515143383d9cce916af0545d7",
+          "md5": "0627a801b7177d2ce3ec293dfad9ebc3"
+        },
+        {
+          "path": "firmware/partitions.bin",
+          "offset": 32768,
+          "size": 3072,
+          "sha256": "506f27facf40db164276cb5ceb95fb5d4144b6418077cbda3d2940d920ef2110",
+          "md5": "c189f206ff6f0efa4760d2cfebd21011"
+        },
+        {
+          "path": "firmware/boot_app0.bin",
+          "offset": 57344,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0",
+          "md5": "e6327541e2dc394ca2c3b3280ac0f39f"
+        },
+        {
+          "path": "firmware/HostPSM_ESP32S2.bin",
+          "offset": 65536,
+          "size": 3073216,
+          "sha256": "1beb27ac8f626d77991e21b7ebd506ac01b7adb6c3a2ef3c955d1f5599a207dc",
+          "md5": "075e0565969dfa702649d38c54d2948b"
+        }
+      ]
+    }
+  ]
+}
