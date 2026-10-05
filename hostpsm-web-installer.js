@@ -1,4 +1,4 @@
-// Host PSM ReLapse v1.2.3 — revisão do instalador 2026-09-12. ROM ESP32-S2, sem stub.
+// Host PSM ReLapse v1.4.0 — revisão do instalador 2026-09-12. ROM ESP32-S2, sem stub.
 // Os testes locais modelam o protocolo; a aprovação na placa é independente.
 const INSTALLER_REVISION = "2026-09-12-r1";
 const ROM = Object.freeze({flashBegin: 0x02, flashData: 0x03, sync: 0x08,
@@ -628,7 +628,7 @@ class InstallerUi {
     this.modalBody.innerHTML = `<div class="connectInstruction">
       <svg class="uiIcon" aria-hidden="true"><use href="#usbIcon"/></svg>
       <p class="instructionText">Reconecte a placa segurando <kbd>BOOT/B0</kbd>.
-      <span>Instalação do Host PSM ReLapse v1.2.3. Solte o botão antes de selecionar a porta.</span></p>
+      <span>Instalação do Host PSM ReLapse v1.4.0. Solte o botão antes de selecionar a porta.</span></p>
     </div>`;
     this.modalPrimary.textContent = "Selecionar porta";
     this.modalSecondary.textContent = "Cancelar";
@@ -680,7 +680,7 @@ class InstallerUi {
     if (verified) {
       InstallerUi.showView("success");
       title = this.blocked ? "Instalação verificada" : "Instalação concluída";
-      body = `${this.blocked ? "" : '<p class="resultLead"><strong>Host PSM ReLapse v1.2.3</strong> instalado na ESP32-S2.</p><p class="ps5Label">NO PS5</p>'}
+      body = `${this.blocked ? "" : '<p class="resultLead"><strong>Host PSM ReLapse v1.4.0</strong> instalado na ESP32-S2.</p><p class="ps5Label">NO PS5</p>'}
         <div class="networkDetails"><div class="networkItem"><span>Wi-Fi</span><strong>Conecte: HostPSM</strong></div>
         <div class="networkItem"><span>DNS</span><strong>Configure: 10.1.1.1</strong></div></div>
         <p class="nextStep">Conecte no Wi-Fi HostPSM e abra o <strong>Guia do Usuário</strong> para iniciar WebKit → ReLapse → PLDMGR.</p>`;

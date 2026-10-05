@@ -1,9 +1,9 @@
 {
   "name": "Host PSM ReLapse ESP32-S2",
-  "version": "1.2.3",
+  "version": "1.4.0",
   "schema_version": 2,
   "flash_size": 4194304,
-  "build_id": "53c04195130414d721cb131ae4a429674bc114397ba355b76f65caba911814ad",
+  "build_id": "a680d0cd4637958dc9d7aaa7445777c3a580500f60c160c90199cc46a692d227",
   "new_install_prompt_erase": false,
   "builds": [
     {
@@ -34,8 +34,8 @@
           "path": "firmware/HostPSM_ESP32S2.bin",
           "offset": 65536,
           "size": 3103424,
-          "sha256": "b14f29d5cf069141f60138cb3006656f37bf776d66a1ff743d251bcb50c7c285",
-          "md5": "531b526e422735ff51a354391d47618b"
+          "sha256": "3b7ea5d1626c39cb99a5cb3e6e0990e58e5fd05550163784449d790db873160c",
+          "md5": "ba01341b46b453c81ed7be78ce4ea310"
         }
       ]
     }
