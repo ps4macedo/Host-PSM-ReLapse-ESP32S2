@@ -1,9 +1,9 @@
 {
-  "name": "Host PSM ReLapse ESP32-S2",
-  "version": "1.4.1",
+  "name": "Host PSM WobKot/ReLapse ESP32-S2",
+  "version": "1.2.3",
   "schema_version": 2,
   "flash_size": 4194304,
-  "build_id": "a72f2e09767bb637296106a8842d15a17a820219705868b6872322442f5df3d9",
+  "build_id": "43a49e6b77449cb2efc3ee7f90e38252a27f40446413f629bdc03312e78639af",
   "new_install_prompt_erase": false,
   "builds": [
     {
@@ -33,9 +33,9 @@
         {
           "path": "firmware/HostPSM_ESP32S2.bin",
           "offset": 65536,
-          "size": 3263392,
-          "sha256": "590ff8f7720b571900e0a844fdd1c2d0c77cd1ea338230d362b84c8bf8fd6c87",
-          "md5": "56268f3a13abbf31590c4f9464f99d98"
+          "size": 3078640,
+          "sha256": "4bde279500cd2adbfb22291720b9c7d6bc1618d426f115d926739b57a8f5144d",
+          "md5": "a61abc706593afa4a79a84ebd0fa00c4"
         }
       ]
     }

@@ -1,4 +1,4 @@
-// Host PSM ReLapse v1.4.1 — revisão do instalador 2026-09-12. ROM ESP32-S2, sem stub.
+// Host PSM WobKot/ReLapse v1.2.3 — revisão do instalador 2026-09-12. ROM ESP32-S2, sem stub.
 // Os testes locais modelam o protocolo; a aprovação na placa é independente.
 const INSTALLER_REVISION = "2026-09-12-r1";
 const ROM = Object.freeze({flashBegin: 0x02, flashData: 0x03, sync: 0x08,
@@ -564,7 +564,7 @@ class InstallerUi {
   }
   begin() {
     if (this.record) this.previous = this.record;
-    this.record = {installer: INSTALLER_REVISION, product: "Host PSM ReLapse", session: crypto.randomUUID(), started: new Date().toISOString(),
+    this.record = {installer: INSTALLER_REVISION, product: "Host PSM WobKot/ReLapse", session: crypto.randomUUID(), started: new Date().toISOString(),
       environment: navigator.userAgent, events: [], phase: "Preparação"};
     this.persist();
     this.heartbeat = setInterval(() => {
@@ -628,7 +628,7 @@ class InstallerUi {
     this.modalBody.innerHTML = `<div class="connectInstruction">
       <svg class="uiIcon" aria-hidden="true"><use href="#usbIcon"/></svg>
       <p class="instructionText">Reconecte a placa segurando <kbd>BOOT/B0</kbd>.
-      <span>Instalação do Host PSM ReLapse v1.4.1. Solte o botão antes de selecionar a porta.</span></p>
+      <span>Instalação do Host PSM WobKot/ReLapse v1.2.3. Solte o botão antes de selecionar a porta.</span></p>
     </div>`;
     this.modalPrimary.textContent = "Selecionar porta";
     this.modalSecondary.textContent = "Cancelar";
@@ -654,11 +654,11 @@ class InstallerUi {
   }
   openProgress(cancel) {
     InstallerUi.showView("progress");
-    this.modalTitle.textContent = "Instalando Host PSM ReLapse";
+    this.modalTitle.textContent = "Instalando Host PSM WobKot/ReLapse";
     this.modalBody.innerHTML = `<div class="progressPanel">
       <div class="progressTop"><p id="modalMessage" role="status" aria-live="polite"></p><p id="modalPercent" hidden></p></div>
       <div id="progressShell" class="progressShell" role="progressbar" aria-label="Dados confirmados" aria-valuemin="0" aria-valuemax="100" hidden><div id="modalProgress"></div></div>
-      </div><p class="progressNote">Não desconecte a <strong>ESP32-S2</strong> durante a instalação do Host PSM ReLapse.</p>`;
+      </div><p class="progressNote">Não desconecte a <strong>ESP32-S2</strong> durante a instalação do Host PSM WobKot/ReLapse.</p>`;
     InstallerUi.details(`<p id="modalElapsed"></p><pre id="modalLog" class="visible"></pre>`);
     this.modalPrimary.hidden = true; this.modalClose.hidden = true;
     this.modalDiagnostic.hidden = false; this.modalDiagnostic.disabled = false; this.modalDiagnostic.textContent = "Salvar registro";
@@ -680,10 +680,10 @@ class InstallerUi {
     if (verified) {
       InstallerUi.showView("success");
       title = this.blocked ? "Instalação verificada" : "Instalação concluída";
-      body = `${this.blocked ? "" : '<p class="resultLead"><strong>Host PSM ReLapse v1.4.1</strong> instalado na ESP32-S2.</p><p class="ps5Label">NO PS5</p>'}
+      body = `${this.blocked ? "" : '<p class="resultLead"><strong>Host PSM WobKot/ReLapse v1.2.3</strong> instalado na ESP32-S2.</p><p class="ps5Label">NO PS5</p>'}
         <div class="networkDetails"><div class="networkItem"><span>Wi-Fi</span><strong>Conecte: HostPSM</strong></div>
         <div class="networkItem"><span>DNS</span><strong>Configure: 10.1.1.1</strong></div></div>
-        <p class="nextStep">Conecte no Wi-Fi HostPSM e abra o <strong>Guia do Usuário</strong> para iniciar WebKit → ReLapse → PLDMGR.</p>`;
+        <p class="nextStep">Conecte no Wi-Fi HostPSM e abra o <strong>Guia do Usuário</strong> para iniciar WebKit WobKot → ReLapse WobKot → PLDMGR.</p>`;
     } else if (!error && diagnostic) {
       InstallerUi.showView(this.blocked ? "error" : "success");
       title = this.blocked ? "Conexão pendente" : "Conexão testada";
@@ -694,7 +694,7 @@ class InstallerUi {
       body = `<p class="resultLead">${escapeHtml(InstallerUi.errorLabel(error))}</p>${flashStarted ? '<p class="resultNote">A instalação ficou incompleta. Reconecte com BOOT/B0 pressionado e instale novamente.</p>' : ""}`;
     }
     if (this.blocked) body += '<p class="resultNote">A conexão ainda não foi liberada. Reconecte a placa com BOOT liberado e recarregue esta página.</p>';
-    this.stageText.textContent = verified ? "Host PSM ReLapse instalado na ESP32-S2." : diagnostic && !error && !this.blocked ? "Conexão USB testada." : cancelled ? "Pronto para uma nova instalação." : "Confira o resultado para continuar.";
+    this.stageText.textContent = verified ? "Host PSM WobKot/ReLapse instalado na ESP32-S2." : diagnostic && !error && !this.blocked ? "Conexão USB testada." : cancelled ? "Pronto para uma nova instalação." : "Confira o resultado para continuar.";
     this.modalTitle.textContent = title;
     this.modalBody.innerHTML = body;
     InstallerUi.details(`${error ? `<p>${escapeHtml(errorText(error))}</p>` : ""}${cleanup?.errors?.length ? `<p>${escapeHtml(cleanup.errors.join("; "))}</p>` : ""}<pre id="modalLog" class="visible"></pre>`);

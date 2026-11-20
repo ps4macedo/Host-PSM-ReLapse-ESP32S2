@@ -1,7 +1,7 @@
-# Host PSM ReLapse • ESP32-S2
+# Host PSM WobKot/ReLapse • ESP32-S2
 
-Web Installer local do Host PSM ReLapse v1.4.1. Revisão do instalador: 2026-09-12-r1.
-Compatibilidade informada pelo projeto: PS5 FW **7.00–13.60**, via ReLapse, com PLDMGR embutido na ESP32-S2.
+Web Installer local do Host PSM WobKot/ReLapse v1.2.3. Revisão do instalador: 2026-09-12-r1.
+Compatibilidade informada pelo projeto: PS5 FW **7.00–13.60**, via WobKot + ReLapse, com PLDMGR embutido na ESP32-S2.
 
 ## Gerar e publicar
 
