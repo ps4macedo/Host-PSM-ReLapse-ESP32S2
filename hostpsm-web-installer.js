@@ -683,7 +683,7 @@ class InstallerUi {
       body = `${this.blocked ? "" : '<p class="resultLead"><strong>Host PSM WobKot/ReLapse v1.2.3</strong> instalado na ESP32-S2.</p><p class="ps5Label">NO PS5</p>'}
         <div class="networkDetails"><div class="networkItem"><span>Wi-Fi</span><strong>Conecte: HostPSM</strong></div>
         <div class="networkItem"><span>DNS</span><strong>Configure: 10.1.1.1</strong></div></div>
-        <p class="nextStep">Conecte no Wi-Fi HostPSM e abra o <strong>Guia do Usuário</strong> para iniciar WebKit WobKot → ReLapse WobKot → PLDMGR.</p>`;
+        <p class="nextStep">Conecte no Wi-Fi HostPSM e abra o <strong>Guia do Usuário</strong> para iniciar WebKit WobKot → ReLapse WobKot → Instalador do atalho offline.</p>`;
     } else if (!error && diagnostic) {
       InstallerUi.showView(this.blocked ? "error" : "success");
       title = this.blocked ? "Conexão pendente" : "Conexão testada";

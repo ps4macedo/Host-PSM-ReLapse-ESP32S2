@@ -1,7 +1,7 @@
 # Host PSM WobKot/ReLapse • ESP32-S2
 
 Web Installer local do Host PSM WobKot/ReLapse v1.2.3. Revisão do instalador: 2026-09-12-r1.
-Compatibilidade informada pelo projeto: PS5 FW **7.00–13.60**, via WobKot + ReLapse, com PLDMGR embutido na ESP32-S2.
+Compatibilidade informada pelo projeto: PS5 FW **7.00–13.60**, via WobKot + ReLapse, com instalador de atalho offline embutido na ESP32-S2. O PLDMGR fica no host que sera instalado no PS5.
 
 ## Gerar e publicar
 
